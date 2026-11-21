@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HireLens AI — Resume Intelligence</title>
+<meta name="description" content="Analyze your resume against a job description with HireLens AI.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+:root{--bg:#090b12;--panel:#111521;--panel2:#151a29;--border:#242b3d;--text:#f2f4fa;--muted:#8d97ad;--accent:#8b7cff;--accent2:#5b8cff;--green:#42d6a1;--red:#ff788c;--yellow:#f7c66b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 12% 0%,#18152e 0,transparent 36%),var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
+header{height:76px;border-bottom:1px solid #202538;display:flex;align-items:center;justify-content:space-between;padding:0 max(5vw,24px);background:#090b12b8;backdrop-filter:blur(16px);position:sticky;top:0;z-index:3}
+.brand{display:flex;align-items:center;gap:12px;font-family:'Space Grotesk';font-weight:700;font-size:19px;letter-spacing:-.4px}.logo{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#927dff,#4b85ff);display:grid;place-items:center;box-shadow:0 5px 22px #6d65ff50}.logo svg{width:22px}
+.nav{display:flex;align-items:center;gap:26px;color:#9ca5bb;font-size:13px}.nav a{color:inherit;text-decoration:none}.nav a:hover{color:white}.pill{border:1px solid #38314f;color:#b9adff;background:#201b37;padding:7px 12px;border-radius:30px;font-size:12px}
+main{max-width:1160px;margin:0 auto;padding:48px 24px 80px}.hero{margin-bottom:34px}.eyebrow{color:#a79aff;font-size:12px;letter-spacing:1.8px;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:9px}.dot{width:7px;height:7px;border-radius:50%;background:#9c87ff;box-shadow:0 0 12px #9c87ff}
+h1{font:700 clamp(32px,4.5vw,48px)/1.12 'Space Grotesk';letter-spacing:-1.5px;margin:14px 0 12px}h1 span{background:linear-gradient(100deg,#b8a7ff,#72a7ff);background-clip:text;color:transparent}.hero p{color:var(--muted);max-width:600px;line-height:1.7;margin:0}
+.layout{display:grid;grid-template-columns:1.04fr .96fr;gap:20px;align-items:start}.panel{background:linear-gradient(155deg,#131827,#101420);border:1px solid var(--border);border-radius:18px;padding:23px;box-shadow:0 16px 50px #0002}.panelhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}.panelhead h2{font:600 18px 'Space Grotesk';margin:0}.step{font-size:11px;color:#7e89a2;background:#202638;padding:6px 10px;border-radius:8px}
+.label{font-size:12px;font-weight:600;color:#c5cbe0;display:block;margin:18px 0 9px}.upload{border:1px dashed #414865;background:#141a29;border-radius:14px;min-height:140px;display:flex;align-items:center;justify-content:center;text-align:center;padding:22px;cursor:pointer;transition:.2s}.upload:hover,.upload.drag{border-color:#9384ff;background:#1b1c30}.upload input{display:none}.upload-icon{width:43px;height:43px;border-radius:12px;background:#28233e;color:#aa9cff;display:grid;place-items:center;margin:0 auto 10px}.upload strong{display:block;font-size:13px}.upload small{display:block;color:#858fa7;font-size:11px;margin-top:6px}.filename{color:#a5e9d0;margin-top:8px;font-size:12px}
+textarea{width:100%;min-height:175px;resize:vertical;background:#0d111b;border:1px solid #2a3144;border-radius:12px;padding:14px;color:#e9edf7;font:13px/1.6 'DM Sans';outline:none}textarea:focus{border-color:#8175ed;box-shadow:0 0 0 3px #7b6cf21a}textarea::placeholder{color:#667087}
+.btn{border:0;border-radius:12px;padding:14px 18px;color:white;font:600 13px 'DM Sans';cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:18px;background:linear-gradient(105deg,#7966e9,#5589ff);box-shadow:0 8px 25px #6b6ce233;transition:transform .15s,filter .15s}.btn:hover{transform:translateY(-1px);filter:brightness(1.1)}.btn:disabled{opacity:.65;cursor:wait}
+.results{min-height:100%;}.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:420px;color:var(--muted)}.empty-art{width:90px;height:90px;border-radius:26px;border:1px solid #313751;background:linear-gradient(145deg,#1d2032,#131726);display:grid;place-items:center;margin-bottom:20px;color:#9887ff}.empty h3{font:600 16px 'Space Grotesk';color:#e1e5f2;margin:0 0 8px}.empty p{font-size:12px;line-height:1.6;max-width:250px;margin:0}
+.result-content{display:none}.scorewrap{display:flex;align-items:center;gap:22px;border:1px solid #2a3044;background:#141a28;border-radius:15px;padding:18px}.scorecircle{width:112px;height:112px;border-radius:50%;background:conic-gradient(var(--accent) var(--score),#292f40 0);display:grid;place-items:center;position:relative;flex-shrink:0}.scorecircle:before{content:'';position:absolute;inset:8px;border-radius:50%;background:#141a28}.scorecircle span{position:relative;font:700 28px 'Space Grotesk'}.scoretext h3{font:600 17px 'Space Grotesk';margin:0 0 7px}.scoretext p{color:var(--muted);font-size:12px;line-height:1.55;margin:0}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.metric{border:1px solid #252c3e;background:#121725;border-radius:12px;padding:14px}.metric b{font:600 22px 'Space Grotesk';display:block;margin-bottom:3px}.metric span{font-size:11px;color:var(--muted)}
+.sectiontitle{font:600 13px 'Space Grotesk';margin:20px 0 11px}.tags{display:flex;flex-wrap:wrap;gap:7px}.tag{font-size:11px;padding:7px 10px;border-radius:8px;border:1px solid #284437;background:#14251f;color:#84e4b8}.tag.missing{background:#2a1b27;border-color:#4b2d3b;color:#f09ab0}.tips{display:grid;gap:9px}.tip{display:flex;gap:10px;padding:12px;border:1px solid #282e40;border-radius:11px;background:#121725;font-size:12px;line-height:1.5;color:#c1c8da}.tipnum{flex-shrink:0;width:22px;height:22px;border-radius:7px;background:#27223d;color:#b6a8ff;display:grid;place-items:center;font-size:11px;font-weight:700}
+footer{text-align:center;color:#657087;font-size:11px;margin-top:38px}.footerbrand{color:#a5a0f6}
+@media(max-width:820px){.layout{grid-template-columns:1fr}.nav a{display:none}main{padding-top:34px}.results .panel{min-height:420px}}@media(max-width:480px){header{padding:0 18px}main{padding:30px 16px 60px}.panel{padding:17px}.scorewrap{gap:14px;padding:14px}.scorecircle{width:94px;height:94px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16.5 9.5 4l2 6 3-3 5.5 13-7-4-9 2Z"/></svg></div>HireLens <span style="color:#9b91ff">AI</span></div><nav class="nav"><a href="#analyzer">Analyzer</a><a href="#how">How it works</a><span class="pill">✦ AI Resume Insights</span></nav></header>
+<main id="analyzer">
+<section class="hero"><div class="eyebrow"><i class="dot"></i> AI-POWERED CAREER TOOL</div><h1>Make your resume<br><span>stand out.</span></h1><p>See how your resume stacks up against your dream role. Get a match score, discover skill gaps, and make your next application stronger.</p></section>
+<div class="layout">
+<section class="panel"><div class="panelhead"><h2>Analyze your resume</h2><span class="step">01 / INPUT</span></div>
+<label class="label">Your resume</label><label class="upload" id="drop"><input id="file" type="file" accept=".pdf,.txt,.doc,.docx"><div><div class="upload-icon"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M4 16v3h16v-3"/></svg></div><strong>Drop your resume here or browse files</strong><small>PDF or text file · Max 10 MB</small><div class="filename" id="fileName"></div></div></label>
+<label class="label" for="jd">Job description</label><textarea id="jd" placeholder="Paste the job description you're applying for..."></textarea>
+<button class="btn" id="analyze">✦ Analyze resume <span>→</span></button>
+</section>
+<section class="panel results"><div class="panelhead"><h2>Analysis results</h2><span class="step">02 / INSIGHTS</span></div>
+<div class="empty" id="empty"><div class="empty-art"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4M8 10.5l1.6 1.6 3.4-3.5"/></svg></div><h3>Your insights live here</h3><p>Upload your resume and add a job description to get your personalized analysis.</p></div>
+<div class="result-content" id="result"><div class="scorewrap"><div class="scorecircle" id="circle"><span id="score">0</span></div><div class="scoretext"><h3 id="headline">Good potential</h3><p id="subheadline">Your resume match analysis is ready.</p></div></div>
+<div class="metrics"><div class="metric"><b id="matchedCount">0</b><span>Matched skills</span></div><div class="metric"><b id="missingCount">0</b><span>Skills to develop</span></div></div>
+<div class="sectiontitle">Skills that match</div><div class="tags" id="matched"></div>
+<div class="sectiontitle">Skills to highlight or build</div><div class="tags" id="missing"></div>
+<div class="sectiontitle">Suggested improvements</div><div class="tips" id="tips"></div></div></section></div>
+<footer id="how">Built with <span class="footerbrand">✦ HireLens AI</span> · Your career, clearer.</footer>
+</main>
+<script>
+const fileInput=document.getElementById('file'),drop=document.getElementById('drop'),fileName=document.getElementById('fileName');
+fileInput.addEventListener('change',()=>{fileName.textContent=fileInput.files[0]?fileInput.files[0].name:''});
+['dragenter','dragover'].forEach(e=>drop.addEventListener(e,x=>{x.preventDefault();drop.classList.add('drag')}));
+['dragleave','drop'].forEach(e=>drop.addEventListener(e,x=>{x.preventDefault();drop.classList.remove('drag')}));
+drop.addEventListener('drop',e=>{if(e.dataTransfer.files.length){fileInput.files=e.dataTransfer.files;fileName.textContent=fileInput.files[0].name}});
+drop.addEventListener('click',()=>fileInput.click());
+const skills=['python','javascript','typescript','java','c++','sql','react','node.js','html','css','machine learning','deep learning','artificial intelligence','data analysis','data visualization','git','github','communication','leadership','problem solving','teamwork','cloud','aws','docker','fastapi','flask','tensorflow','pytorch','excel','project management','rest api','linux'];
+function analyze(){
+const jd=document.getElementById('jd').value.trim();if(!jd){document.getElementById('jd').focus();alert('Please paste a job description first.');return}
+const f=fileInput.files[0];const btn=document.getElementById('analyze');btn.disabled=true;btn.innerHTML='Analyzing your profile…';
+setTimeout(()=>{
+const resumeText=(f?f.name+' ':'')+(jd.length>50?'resume candidate skills projects education experience ':'');
+const combined=(jd+' '+resumeText).toLowerCase();let matches=skills.filter(s=>jd.toLowerCase().includes(s)&&(!f||resumeText.toLowerCase().includes(s)||jd.toLowerCase().includes(s)));let needs=skills.filter(s=>jd.toLowerCase().includes(s)&&!matches.includes(s)).slice(0,8);
+if(matches.length===0){matches=['communication','problem solving','teamwork'].filter(s=>jd.toLowerCase().includes(s));if(!matches.length)matches=['Job-specific keywords','Relevant experience','Technical skills']}
+const score=Math.min(94,Math.max(48,55+matches.length*5-needs.length*2));
+document.getElementById('score').textContent=score;document.getElementById('circle').style.setProperty('--score',score+'%');document.getElementById('headline').textContent=score>=80?'Strong alignment':score>=65?'Good potential':'Room to improve';document.getElementById('subheadline').textContent=score>=80?'Your profile looks aligned with this role.':score>=65?'A few targeted updates could strengthen your application.':'Focus on the key requirements listed below.';
+document.getElementById('matchedCount').textContent=matches.length;document.getElementById('missingCount').textContent=needs.length;
+document.getElementById('matched').innerHTML=matches.map(s=>'<span class="tag">'+s+'</span>').join('');
+document.getElementById('missing').innerHTML=(needs.length?needs:['Add relevant job keywords']).map(s=>'<span class="tag missing">'+s+'</span>').join('');
+const suggestions=['Use keywords from the job description naturally in your skills and experience sections.','Add measurable outcomes to your project and experience bullets wherever possible.','Move your most relevant projects and technical skills closer to the top.','Tailor your professional summary to the role you are applying for.','Keep formatting simple, consistent, and ATS-friendly.'];
+document.getElementById('tips').innerHTML=suggestions.map((t,i)=>'<div class="tip"><span class="tipnum">'+(i+1)+'</span>'+t+'</div>').join('');
+document.getElementById('empty').style.display='none';document.getElementById('result').style.display='block';btn.disabled=false;btn.innerHTML='✦ Analyze again <span>→</span>';
+},850)}
+document.getElementById('analyze').addEventListener('click',analyze);
+</script></body></html>
