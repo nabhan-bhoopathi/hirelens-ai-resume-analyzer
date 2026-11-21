@@ -1,17 +1,28 @@
-# HireLens AI
+# HireLens AI — Resume Analyzer & ATS Score Checker
 
-A clean, responsive resume-to-job-description matching prototype for Task 2.
+A Streamlit + Google Gemini prototype that compares a PDF resume with a job description and returns an ATS-style match score, matched skills, missing keywords, and five improvement suggestions.
 
-## Features
-- Resume file upload UI
-- Job description input
-- Match score display
-- Matched and missing keyword chips
-- Improvement suggestions
-- Responsive dark dashboard UI
+## Run locally
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
 
-## Run
-Open `index.html` in any modern browser. No installation or API key required.
+## Configure Gemini
+Create `.streamlit/secrets.toml`:
+```toml
+GEMINI_API_KEY = "your-google-ai-studio-key"
+```
+Get a key from https://aistudio.google.com/app/apikey. Never commit secrets to GitHub.
 
-## Note
-This is a frontend demonstration prototype. The current score and skill insights are demo logic and do not parse the uploaded document or call a live AI model.
+## Deploy
+Deploy this repository on Streamlit Community Cloud with `app.py` as the entrypoint, then add `GEMINI_API_KEY` under App settings → Secrets.
+
+## How it works
+1. Upload a searchable PDF resume.
+2. Paste a target job description.
+3. The app extracts PDF text using pypdf.
+4. Gemini analyzes the text and returns structured JSON.
+5. The app displays the match score, skill gaps, and improvement suggestions.
+
+This is an educational prototype. ATS scores are estimates, not guarantees of hiring outcomes.
